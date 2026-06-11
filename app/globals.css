@@ -1,0 +1,162 @@
+@import "tailwindcss";
+
+/*
+ * wc26-league — dark editorial system on a cool charcoal canvas with the
+ * classic football palette (green / navy / red) over neutral greys, plus a
+ * geometric "26" echo motif for richness. No cream. Bold but composed.
+ */
+@theme {
+  --color-bg: #16191d;
+  --color-surface: #1e2228;
+  --color-elevated: #272c33;
+  --color-fg: #f2f1ec;
+  --color-muted: #9aa0a7;
+
+  /* Brand palette (image-11): green, navy/indigo, red + sand neutral */
+  --color-green: #4fb053;
+  --color-navy: #4548d4;
+  --color-red: #e8473a;
+  --color-sand: #d3d3cf;
+
+  --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-hanken), ui-sans-serif, system-ui, sans-serif;
+
+  --radius-xl2: 1.25rem;
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+}
+
+/* Faint grain for depth */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@layer components {
+  .surface {
+    background-color: var(--color-surface);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: var(--radius-xl2);
+  }
+  .surface-hover {
+    transition: border-color 0.15s, transform 0.15s;
+  }
+  .surface-hover:hover {
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+  }
+
+  .display {
+    font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    line-height: 0.95;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 9999px;
+    padding: 0.6rem 1.1rem;
+    font-weight: 700;
+    font-size: 0.875rem;
+    transition: transform 0.12s ease, opacity 0.12s, filter 0.12s;
+  }
+  .btn:active {
+    transform: translateY(1px);
+  }
+  .btn-primary {
+    background-color: var(--color-green);
+    color: #06140a;
+  }
+  .btn-primary:hover {
+    filter: brightness(1.08);
+  }
+  .btn-primary:disabled {
+    opacity: 0.5;
+  }
+  .btn-ghost {
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    color: var(--color-fg);
+  }
+  .btn-ghost:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+  }
+
+  .field {
+    width: 100%;
+    border-radius: 0.85rem;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background-color: rgba(255, 255, 255, 0.04);
+    padding: 0.6rem 0.85rem;
+    font-size: 0.875rem;
+    color: var(--color-fg);
+    outline: none;
+  }
+  .field::placeholder {
+    color: var(--color-muted);
+  }
+  .field:focus {
+    border-color: var(--color-green);
+  }
+
+  .pill {
+    border-radius: 9999px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 0.4rem 0.9rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--color-muted);
+    transition: all 0.12s;
+    white-space: nowrap;
+  }
+  .pill:hover {
+    color: var(--color-fg);
+    border-color: rgba(255, 255, 255, 0.25);
+  }
+  .pill-active {
+    background-color: var(--color-fg);
+    border-color: var(--color-fg);
+    color: var(--color-bg);
+  }
+
+  /* Concentric rounded "echo" motif — the FWC Amplify spirit, restrained. */
+  .echo26 {
+    border-radius: 1.5rem;
+    box-shadow:
+      0 0 0 0.55rem var(--color-green),
+      0 0 0 1.1rem var(--color-bg),
+      0 0 0 1.65rem var(--color-navy),
+      0 0 0 2.2rem var(--color-bg),
+      0 0 0 2.75rem var(--color-red);
+  }
+}
+
+@keyframes riseIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.rise {
+  animation: riseIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
