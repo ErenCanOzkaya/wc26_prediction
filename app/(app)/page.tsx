@@ -35,7 +35,7 @@ export default async function DashboardPage() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  const [{ data: profile }, { data: myScores }, { data: leagues }] =
+  const [{ data: profile }, { data: myScores }, { data: leagues }, { data: dailyGame }] =
     await Promise.all([
       supabase
         .from("profiles")
@@ -44,6 +44,13 @@ export default async function DashboardPage() {
         .maybeSingle(),
       supabase.from("scores").select("category,points").eq("user_id", user!.id),
       supabase.from("leagues").select("id,name", { count: "exact" }),
+      supabase
+        .from("game_session")
+        .select("solved,points,finished_at")
+        .eq("user_id", user!.id)
+        .eq("mode", "daily")
+        .eq("puzzle_date", new Date().toISOString().slice(0, 10))
+        .maybeSingle(),
     ]);
 
   const byCat = new Map<string, number>();
@@ -151,6 +158,25 @@ export default async function DashboardPage() {
             <div>
               <div className="display text-2xl">{leagues?.length ?? 0}</div>
               <div className="text-xs text-muted">your leagues</div>
+            </div>
+            <span className="text-sm font-bold text-green">→</span>
+          </Link>
+          <Link
+            href="/games/career?mode=daily"
+            className="surface surface-hover rise flex items-center justify-between p-5"
+            style={{ animationDelay: "380ms" }}
+          >
+            <div>
+              <div className="text-xs font-bold uppercase tracking-widest text-muted">
+                Daily puzzle
+              </div>
+              <div className="mt-1 text-sm">
+                {dailyGame?.finished_at
+                  ? dailyGame.solved
+                    ? `Solved · +${dailyGame.points}`
+                    : "Played today"
+                  : "Guess the career path"}
+              </div>
             </div>
             <span className="text-sm font-bold text-green">→</span>
           </Link>
