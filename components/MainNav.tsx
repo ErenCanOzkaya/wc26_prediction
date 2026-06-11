@@ -8,6 +8,7 @@ const ITEMS = [
   { href: "/predictions/matches", label: "Predictions", match: "/predictions" },
   { href: "/leagues", label: "Leagues", match: "/leagues" },
   { href: "/calendar", label: "Calendar", match: "/calendar" },
+  { href: "/games", label: "Games", match: "/games" },
   { href: "/rules", label: "Rules", match: "/rules" },
 ];
 
