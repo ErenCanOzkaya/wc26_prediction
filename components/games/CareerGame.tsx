@@ -83,7 +83,7 @@ export function CareerGame({
         </div>
       )}
 
-      <CareerTimeline revealed={view.revealed} clubCount={view.clubCount} />
+      <CareerTimeline revealed={view.revealed} hiddenYears={view.hiddenYears} />
 
       <div className="mt-5 flex items-center justify-center gap-1.5">
         {Array.from({ length: view.clubCount }).map((_, i) => (

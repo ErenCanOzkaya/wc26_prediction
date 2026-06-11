@@ -12,8 +12,11 @@ const db = createClient(
   { auth: { persistSession: false } },
 );
 
-// Name heuristic for reserve/youth sides.
-const YOUTH = /\b(C|B|II|U1[89]|U2[0-3]|Juvenil|Atlètic|Atletic|Reserve|Reserves|Youth|Academy)\b/;
+// Name heuristic for reserve/youth sides. Only a trailing " B"/" C"/" II"/" III"
+// suffix (e.g. "FC Porto B") or explicit youth words — must NOT match the "C" in
+// "F.C."/"A.F.C." (that wrongly dropped clubs like "Liverpool F.C.").
+const YOUTH =
+  /(\bU-?(1[5-9]|2[0-3])\b)|(\b(Juvenil|Atlètic|Atletic|Reserves?|Youth|Academy)\b)|(\s(B|C|II|III)$)/i;
 
 // All career rows, grouped by club name (one Wikidata lookup per distinct club).
 async function allCareerRows() {
@@ -21,7 +24,7 @@ async function allCareerRows() {
   for (let from = 0; ; from += 1000) {
     const { data } = await db
       .from("player_career")
-      .select("player_id,ord,club")
+      .select("player_id,ord,club,start_year,end_year")
       .order("player_id")
       .range(from, from + 999);
     if (!data?.length) break;
@@ -111,6 +114,8 @@ async function main() {
         player_id: pid,
         ord,
         club: r.club,
+        start_year: r.start_year,
+        end_year: r.end_year,
         club_logo_url: m.logo,
         league: m.league,
       });

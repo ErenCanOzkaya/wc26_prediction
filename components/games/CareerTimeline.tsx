@@ -1,14 +1,16 @@
 import type { RevealedClub } from "@/lib/games/career";
 
-/** Shows revealed clubs as big crest circles + name + year; hidden ones as "?". */
+/**
+ * Big crest circles for revealed clubs (logo + name + year). Still-hidden spells
+ * show "?" with their transfer year underneath as a hint.
+ */
 export function CareerTimeline({
   revealed,
-  clubCount,
+  hiddenYears,
 }: {
   revealed: RevealedClub[];
-  clubCount: number;
+  hiddenYears: (number | null)[];
 }) {
-  const hidden = Math.max(0, clubCount - revealed.length);
   return (
     <div className="flex flex-wrap items-start justify-center gap-x-3 gap-y-5">
       {revealed.map((c, i) => (
@@ -38,13 +40,13 @@ export function CareerTimeline({
           <span className="display text-base">{c.startYear ?? "?"}</span>
         </div>
       ))}
-      {Array.from({ length: hidden }).map((_, i) => (
+      {hiddenYears.map((y, i) => (
         <div key={`h${i}`} className="flex w-20 flex-col items-center gap-1.5">
           <div className="flex h-20 w-20 items-center justify-center rounded-full bg-white/5 text-3xl font-bold text-muted">
             ?
           </div>
           <span className="h-7" />
-          <span className="display text-base text-muted">·</span>
+          <span className="display text-base text-muted">{y ?? "·"}</span>
         </div>
       ))}
     </div>

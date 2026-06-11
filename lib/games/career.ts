@@ -20,7 +20,8 @@ export interface GameView {
   sessionId: string;
   mode: "daily" | "practice";
   clubCount: number; // = guess limit (G)
-  revealed: RevealedClub[]; // only revealed spells
+  revealed: RevealedClub[]; // only revealed spells (with club + logo)
+  hiddenYears: (number | null)[]; // start years of the still-hidden spells
   guesses: { playerId: number; name: string; comparison: Comparison }[];
   movesUsed: number;
   finished: boolean;
@@ -100,6 +101,7 @@ async function buildView(
     mode: session.mode,
     clubCount,
     revealed: career.slice(0, revealCount),
+    hiddenYears: career.slice(revealCount).map((c) => c.startYear),
     guesses,
     movesUsed,
     finished,
