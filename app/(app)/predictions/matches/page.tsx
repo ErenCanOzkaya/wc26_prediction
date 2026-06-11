@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { isMatchLocked } from "@/lib/locks";
+import { fmtDay as dayFmt, fmtTime as timeFmt } from "@/lib/datetime";
 import { LiveRefresh } from "@/components/LiveRefresh";
 import {
   MatchPredictionRow,
@@ -35,16 +36,6 @@ function one(t: TeamLite | TeamLite[] | null): TeamLite | null {
   if (!t) return null;
   return Array.isArray(t) ? (t[0] ?? null) : t;
 }
-
-const dayFmt = new Intl.DateTimeFormat("en-GB", {
-  weekday: "short",
-  day: "numeric",
-  month: "short",
-});
-const timeFmt = new Intl.DateTimeFormat("en-GB", {
-  hour: "2-digit",
-  minute: "2-digit",
-});
 
 export default async function MatchPredictionsPage() {
   const supabase = await createClient();

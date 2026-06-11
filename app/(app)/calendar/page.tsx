@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { CalendarView, type CalMatch } from "@/components/CalendarView";
 import { LiveRefresh } from "@/components/LiveRefresh";
+import { fmtDay, fmtTime } from "@/lib/datetime";
 
 export const dynamic = "force-dynamic";
 
@@ -18,16 +19,6 @@ interface Row {
 }
 
 const one = (t: Row["home"]) => (Array.isArray(t) ? (t[0] ?? null) : t);
-
-const dayFmt = new Intl.DateTimeFormat("en-GB", {
-  weekday: "short",
-  day: "numeric",
-  month: "short",
-});
-const timeFmt = new Intl.DateTimeFormat("en-GB", {
-  hour: "2-digit",
-  minute: "2-digit",
-});
 
 export default async function CalendarPage() {
   const supabase = await createClient();
@@ -60,8 +51,8 @@ export default async function CalendarPage() {
       status: m.status,
       homeScore: m.home_score,
       awayScore: m.away_score,
-      day: dayFmt.format(k),
-      time: timeFmt.format(k),
+      day: fmtDay.format(k),
+      time: fmtTime.format(k),
       homeName: h?.name ?? "TBD",
       awayName: a?.name ?? "TBD",
       homeCrest: h?.crest_url ?? null,
@@ -81,8 +72,8 @@ export default async function CalendarPage() {
         <span className="text-green">CALENDAR</span>
       </h1>
       <p className="mt-3 mb-5 max-w-md text-sm text-muted">
-        All 104 fixtures. Star the ones you’ll watch and export them to your
-        calendar — the .ics carries the exact UTC kickoff.
+        All 104 fixtures, in Turkey time (GMT+3). Star the ones you’ll watch and
+        export them — the .ics carries the exact kickoff for your own calendar.
       </p>
       <CalendarView matches={matches} watchedIds={watchedIds} />
     </div>

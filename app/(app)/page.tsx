@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { Motif26 } from "@/components/Motif26";
+import { fmtDateTime } from "@/lib/datetime";
 
 const CATEGORIES = [
   { key: "match", label: "Match scores", color: "var(--color-green)" },
@@ -128,7 +129,7 @@ export default async function DashboardPage() {
                 {teamName(nextMatch.away)}
               </p>
               <p className="mt-2 text-xs text-muted">
-                {new Date(nextMatch.kickoff).toLocaleString()}
+                {fmtDateTime.format(new Date(nextMatch.kickoff))}
               </p>
             </Link>
           ) : (

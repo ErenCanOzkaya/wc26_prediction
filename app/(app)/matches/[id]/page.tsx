@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { LiveRefresh } from "@/components/LiveRefresh";
+import { fmtDateTime } from "@/lib/datetime";
 
 export const dynamic = "force-dynamic";
 
@@ -153,7 +154,7 @@ export default async function MatchDetailPage({
         </div>
 
         <div className="mt-5 text-center text-sm text-muted">
-          {new Date(m.kickoff).toLocaleString()}
+          {fmtDateTime.format(new Date(m.kickoff))}
           {m.venue ? ` · ${m.venue}` : ""}
         </div>
       </div>
