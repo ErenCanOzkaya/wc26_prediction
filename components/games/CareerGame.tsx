@@ -96,8 +96,16 @@ export function CareerGame({
         ))}
       </div>
 
+      <div className="mt-2 h-4 text-center">
+        {busy && (
+          <span className="text-xs uppercase tracking-widest text-green animate-pulse">
+            Checking…
+          </span>
+        )}
+      </div>
+
       {!view.finished ? (
-        <div className="mt-5 space-y-3">
+        <div className="mt-3 space-y-3">
           <PlayerSearch
             players={players}
             exclude={guessedIds}
