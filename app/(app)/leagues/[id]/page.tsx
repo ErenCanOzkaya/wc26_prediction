@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { TrophyIcon } from "@/components/TrophyIcon";
+import { LeagueActions } from "@/components/LeagueActions";
 
 export const dynamic = "force-dynamic";
 
@@ -23,6 +24,9 @@ export default async function LeagueDetailPage({
 }) {
   const { id } = await params;
   const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   const { data: league } = await supabase
     .from("leagues")
@@ -30,6 +34,7 @@ export default async function LeagueDetailPage({
     .eq("id", id)
     .maybeSingle();
   if (!league) notFound();
+  const isOwner = league.owner_id === user?.id;
 
   const { data: membersRaw } = await supabase
     .from("league_members")
@@ -93,6 +98,10 @@ export default async function LeagueDetailPage({
             {league.invite_code}
           </span>
         </span>
+      </div>
+
+      <div className="mt-4">
+        <LeagueActions leagueId={league.id} isOwner={isOwner} />
       </div>
 
       <div className="mt-6 space-y-2">
