@@ -12,8 +12,6 @@ const db = createClient(
   { auth: { persistSession: false } },
 );
 
-const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
-
 // Name heuristic for reserve/youth sides.
 const YOUTH = /\b(C|B|II|U1[89]|U2[0-3]|Juvenil|Atlètic|Atletic|Reserve|Reserves|Youth|Academy)\b/;
 
